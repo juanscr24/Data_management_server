@@ -1,34 +1,40 @@
 {
   "products": [
     {
-      "id": "248f",
-      "product": "Mazda",
-      "price": 2000000,
-      "category": "Vehicles"
-    },
-    {
-      "id": "3cbd",
-      "product": "Dog",
-      "price": 20000,
-      "category": "Animals"
-    },
-    {
-      "id": "e9f7",
-      "product": "Comida",
-      "price": 400000,
+      "id": "3b34",
+      "product": "Jamon",
+      "price": 5000,
       "category": "Food"
     },
     {
-      "id": "71f5",
-      "product": "Tubo pvc",
-      "price": 20000,
-      "category": "Hardware"
+      "id": "b20c",
+      "product": "Punta gorda",
+      "price": 40000,
+      "category": "Food"
     },
     {
-      "id": "b456",
-      "product": "forlan",
-      "price": 5e+93,
+      "id": "6482",
+      "product": "Vaca",
+      "price": 50000,
       "category": "Animals"
+    },
+    {
+      "id": "ee99",
+      "product": "Lamborguini",
+      "price": 10000000,
+      "category": "Vehicles"
+    },
+    {
+      "product": "FERRARI",
+      "price": 45000,
+      "category": "Vehicles",
+      "id": "987a"
+    },
+    {
+      "id": "0f6d",
+      "product": "Carro",
+      "price": 5000,
+      "category": "Vehicles"
     }
   ]
 }

@@ -7,9 +7,10 @@
 
 ## Project Description
 
-Training where I put into practice the use of advanced data structures in JavaScript: objects, arrays, and maps. Through exercises and practical code, I apply my knowledge to efficiently organize, store, and manipulate data, I did a CRUD, always following good programming practices.
+This repository contains a series of exercises and a CRUD project where I put into practice the use of advanced data structures in JavaScript, including objects, arrays, sets, and maps.
+The goal is to efficiently organize, store, and manipulate data while following best programming practices.
 
-Additionally, the project includes training focused on the use of **advanced data structures** in JavaScript: **objects**, **sets**, and **maps**.
+Additionally, JSON Server is used to simulate a REST API, enabling real-world Create, Read, Update, and Delete (CRUD) operations with persistent data during development.
 
 ---
 
@@ -19,6 +20,7 @@ Additionally, the project includes training focused on the use of **advanced dat
 - **CSS3**
 - **JavaScript (Vanilla)**
 - **Vite**
+- **Json Server**
 
 ---
 
@@ -52,6 +54,11 @@ Vite is a rapid development server. To run it, use the following command:
 `npm run dev`
 
 This will start the development server and provide a URL.
+
+### 4. Run the database with Json-server
+Too run it, use the following command:
+
+`npx json-server src/data/db.json`
 
 ### 4. Open the project in your browser
 Once Vite is running, open your browser and go to the provided URL, for example: http://localhost:5173/
