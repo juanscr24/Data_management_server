@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+import axios from "axios";
 import { alerError, alertSucces } from "./alerts";
 
 const endPoint = 'http://localhost:3000/products';
@@ -34,6 +35,7 @@ $btnSave.addEventListener("click", async function (e) {
     $btnSave.textContent = "Save";
 });
 
+// Save a product
 async function saveProduct() {
     const product = $product.value.trim();
     const priceStr = $price.value.trim();
@@ -45,88 +47,95 @@ async function saveProduct() {
         return;
     }
 
-    const response = await fetch(endPoint);
-    const existingProducts = await response.json();
+    try {
+        const response = await axios.get(endPoint);
+        const existingProducts = response.data;
 
-    const nameExists = existingProducts.some(p =>
-        p.product.toLowerCase() === product.toLowerCase() &&
-        p.id != editingProductId
-    );
+        const nameExists = existingProducts.some(p =>
+            p.product.toLowerCase() === product.toLowerCase() &&
+            p.id != editingProductId
+        );
 
-    if (nameExists) {
-        alerError('A product with this name already exists!');
-        return;
+        if (nameExists) {
+            alerError('A product with this name already exists!');
+            return;
+        }
+
+        const newProduct = { product, price, category };
+
+        if (editingProductId !== null) {
+            await axios.put(`${endPoint}/${editingProductId}`, newProduct);
+        } else {
+            await axios.post(endPoint, newProduct);
+        }
+
+        alertSucces("Product saved successfully!");
+    } catch (error) {
+        alerError("Error saving the product.");
+        console.error(error);
     }
-
-    const newProduct = { product, price, category };
-
-    if (editingProductId !== null) {
-        await fetch(`${endPoint}/${editingProductId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newProduct),
-        });
-    } else {
-        await fetch(endPoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(newProduct),
-        });
-    }
-
-    alertSucces("Product saved successfully!");
 }
 
 // Render cards only
 async function renderCards() {
-    const response = await fetch(endPoint);
-    const products = await response.json();
+    try {
+        const response = await axios.get(endPoint);
+        const products = response.data;
 
-    cardContainer.innerHTML = "";
+        cardContainer.innerHTML = "";
 
-    products.forEach((product) => {
-        const imgSrc = categoryImages[product.category] || categoryImages.default;
+        products.forEach((product) => {
+            const imgSrc = categoryImages[product.category] || categoryImages.default;
 
-        const card = document.createElement("article");
-        card.classList.add("card");
+            const card = document.createElement("article");
+            card.classList.add("card");
 
-        card.innerHTML = `
-    <img src="${imgSrc}" alt="${product.category}">
-    <div class="container_info">
-        <h3>${product.product}</h3>
-        <p>Category: ${product.category}</p>
-        <p>Price: $${product.price}</p>
-        <p>ID: ${product.id}</p>
-        <div class="actions">
-            <button class="edit-btn" data-id="${product.id}">Edit</button>
-            <button class="delete-btn" data-id="${product.id}">Delete</button>
-        </div>
-    </div>
-    `;
+            card.innerHTML = `
+            <img src="${imgSrc}" alt="${product.category}">
+            <div class="container_info">
+                <h3>${product.product}</h3>
+                <p><b>Category:</b> ${product.category}</p>
+                <p><b>Price:</b> $${product.price}</p>
+                <p><b>ID:</b> ${product.id}</p>
+                <div class="actions">
+                    <button class="edit-btn" data-id="${product.id}">Edit</button>
+                    <button class="delete-btn" data-id="${product.id}">Delete</button>
+                </div>
+            </div>
+            `;
 
-        // Events for edit and delete
-        card.querySelector(".edit-btn").addEventListener("click", () => {
-            editProduct(product.id);
+            // Events for edit and delete
+            card.querySelector(".edit-btn").addEventListener("click", () => {
+                editProduct(product.id);
+            });
+
+            card.querySelector(".delete-btn").addEventListener("click", () => {
+                deleteProduct(product.id);
+            });
+
+            cardContainer.appendChild(card);
         });
-
-        card.querySelector(".delete-btn").addEventListener("click", () => {
-            deleteProduct(product.id);
-        });
-
-        cardContainer.appendChild(card);
-    });
+    } catch (error) {
+        alerError("Error loading products.");
+        console.error(error);
+    }
 }
 
 // Load product into form for editing
 window.editProduct = async function (id) {
-    const response = await fetch(`${endPoint}/${id}`);
-    const product = await response.json();
+    try {
+        const response = await axios.get(`${endPoint}/${id}`);
+        const product = response.data;
 
-    $product.value = product.product;
-    $price.value = product.price;
-    $category.value = product.category;
-    editingProductId = id;
-    $btnSave.textContent = 'Update';
+        $product.value = product.product;
+        $price.value = product.price;
+        $category.value = product.category;
+        editingProductId = id;
+        $btnSave.textContent = 'Update';
+    } catch (error) {
+        alerError("Error loading product data.");
+        console.error(error);
+    }
 };
 
 // Delete product
@@ -142,9 +151,14 @@ window.deleteProduct = async function (id) {
     });
 
     if (result.isConfirmed) {
-        await fetch(`${endPoint}/${id}`, { method: 'DELETE' });
-        await renderCards();
-        alertSucces("Product has been deleted!");
+        try {
+            await axios.delete(`${endPoint}/${id}`);
+            await renderCards();
+            alertSucces("Product has been deleted!");
+        } catch (error) {
+            alerError("Error deleting product.");
+            console.error(error);
+        }
     }
 };
 
