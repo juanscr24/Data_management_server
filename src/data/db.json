@@ -1,0 +1,34 @@
+{
+  "products": [
+    {
+      "id": "248f",
+      "product": "Mazda",
+      "price": 2000000,
+      "category": "Vehicles"
+    },
+    {
+      "id": "3cbd",
+      "product": "Dog",
+      "price": 20000,
+      "category": "Animals"
+    },
+    {
+      "id": "e9f7",
+      "product": "Comida",
+      "price": 400000,
+      "category": "Food"
+    },
+    {
+      "id": "71f5",
+      "product": "Tubo pvc",
+      "price": 20000,
+      "category": "Hardware"
+    },
+    {
+      "id": "b456",
+      "product": "forlan",
+      "price": 5e+93,
+      "category": "Animals"
+    }
+  ]
+}
